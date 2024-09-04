@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Reddit Posts</title>
+    <title>Subreddit Posts</title>
 </head>
 <body>
-    <h1>Top Reddit Posts</h1>
+    <h1>Top Posts from Subreddit</h1>
     <ul id="posts-list"></ul>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            fetch('/api/posts')
+            fetch('/api/subreddit-posts')
                 .then(response => response.json())
                 .then(posts => {
                     const postsList = document.getElementById('posts-list');
                     posts.forEach(post => {
                         const listItem = document.createElement('li');
-                        listItem.innerHTML = `<a href="https://www.reddit.com${post.permalink}" target="_blank">${post.title}</a>`;
+                        listItem.innerHTML = `
+                            <h3><a href="https://www.reddit.com${post.permalink}" target="_blank">${post.title}</a></h3>
+                            <p><strong>Description:</strong> ${post.description}</p>
+                            <p><strong>Upvotes:</strong> ${post.upvotes} | <strong>Downvotes:</strong> ${post.downvotes}</p>
+                            <p><strong>Author:</strong> ${post.author} | <strong>Subreddit:</strong> ${post.subreddit}</p>
+                        `;
                         postsList.appendChild(listItem);
                     });
                 })
